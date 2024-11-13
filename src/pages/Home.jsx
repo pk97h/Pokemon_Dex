@@ -35,7 +35,7 @@ const Home = () => {
 
   return (
     <HomeBox>
-      <LogoImage src="public\images\pokemon-logo.png" />
+      <LogoImage src="/images/pokemon-logo.png" />
       <StartButton
         onClick={() => {
           navigate("/dex");
