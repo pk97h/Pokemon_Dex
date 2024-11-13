@@ -1,6 +1,7 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import styled from "styled-components";
 import PokemonList from "./PokemonList";
+import { PokemonContext } from "./PokemonContext";
 
 const DashboardStyle = styled.div`
   display: flex;
@@ -58,48 +59,8 @@ const BookMarkWrapper = styled.div`
     box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.3);`}
 `;
 
-const defaultPokeball = {
-  id: null,
-  img_url: "/images/pokeball.png",
-  korean_name: "",
-  types: [],
-  description: "",
-};
-
 const Dashboard = () => {
-  const [favorites, setFavorites] = useState([
-    defaultPokeball,
-    defaultPokeball,
-    defaultPokeball,
-    defaultPokeball,
-    defaultPokeball,
-    defaultPokeball,
-  ]);
-
-  const removeFromFavorites = (pokemonId) => {
-    const updatedFavorites = favorites.map((fav) =>
-      fav.id === pokemonId ? defaultPokeball : fav
-    );
-    setFavorites(updatedFavorites);
-  };
-
-  const AddToFavorites = (selectedPokemon) => {
-    const isDuplicate = favorites.some((fav) => fav.id === selectedPokemon.id);
-
-    if (isDuplicate) {
-      alert("이미 추가된 포켓몬입니다.");
-      return;
-    }
-
-    const emptySlotIndex = favorites.findIndex((fav) => fav.id === null);
-    if (emptySlotIndex !== -1) {
-      const updatedFavorites = [...favorites];
-      updatedFavorites[emptySlotIndex] = selectedPokemon;
-      setFavorites(updatedFavorites);
-    } else {
-      alert("더 이상 추가할 수 없습니다.");
-    }
-  };
+  const {favorites, removePokemon} = useContext(PokemonContext);
 
   const RemoveButton = styled.button`
     font-weight: bold;
@@ -128,7 +89,7 @@ const Dashboard = () => {
                   <p style={{ fontWeight: "bold" }}>{item.korean_name}</p>
                   <RemoveButton
                     onClick={() => {
-                      removeFromFavorites(item.id);
+                      removePokemon(item.id);
                     }}
                   >
                     즐겨찾기 해제
@@ -139,7 +100,6 @@ const Dashboard = () => {
           ))}
         </BookMarkBox>
       </DashboardStyle>
-      <PokemonList AddToFavorites={AddToFavorites} />
     </>
   );
 };

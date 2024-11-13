@@ -1,7 +1,8 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import styled from "styled-components";
 import MockData from "./MockData";
 import { useNavigate } from "react-router-dom";
+import { PokemonContext } from "./PokemonContext";
 
 export const PokemonBox = styled.div`
   display: flex;
@@ -68,7 +69,9 @@ const DescriptionButton = styled.button`
   }
 `;
 
-const PokemonList = ({AddToFavorites}) => {
+const PokemonList = ({}) => {
+
+  const {addPokemon} = useContext(PokemonContext);
 
   const navigate = useNavigate();
 
@@ -89,7 +92,7 @@ const PokemonList = ({AddToFavorites}) => {
               </DescriptionButton>
               <BookMarkButton
                 onClick={() => {
-                  AddToFavorites({ id, img_url, korean_name, type, description });
+                  addPokemon({ id, img_url, korean_name, type, description });
                 }}
               >
                 즐겨찾기 등록
